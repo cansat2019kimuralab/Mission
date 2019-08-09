@@ -1,28 +1,32 @@
-import serial
 import sys
-import numpy as np
-import cv2
-from PIL import Image
-from matplotlib import pyplot as plt
-import matplotlib.pyplot as plt
 import binascii
 import codecs
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+import serial
 import time
+import traceback
+import warnings
+from PIL import Image
+from matplotlib import pyplot as plt
+
+warnings.simplefilter("ignore", DeprecationWarning) #Ignore Warning of DeprecationWaring
+
 img_string=""
 img_strings=[]
 line=[]
 cngtext=[]
-count=0
-print("a")
-mybaudrate=57600
 
-def setSerial(mybaudrate=57600):
+baudrate=57600
+
+def setSerial(mybaudrate=19200):
     com=serial.Serial(
-        port='COM7',
+        port='COM37',
         baudrate=mybaudrate,
         bytesize=serial.EIGHTBITS,
         parity=serial.PARITY_NONE,
-        timeout=None,
+        timeout=5,
         xonxoff=False,
         rtscts=False,
         writeTimeout=None,
@@ -40,76 +44,110 @@ def Send(args, mybaudrate = 19200):
     com.flushOutput()
     com.close()
 
-with open('0806-2Log.txt', 'w') as f:
-    print("b")
-    #Send("1", 57600)
-  #  with serial.Serial('COM7' ,57600, timeout=None) as ser:
-    com=setSerial(mybaudrate)
-    with com as ser:
-     #while len(str(img_strings))<200000:
-    #  while True:
-      while 1:
-        line = ser.readline().decode('utf-8')
-        line=str(line)
+def read(mybaudrate = 19200):
+  re = ""
+  try:
+    com = setSerial(mybaudrate)
+    com.flushInput()
+    re = str(com.readline().decode('utf-8').strip())
+    com.flushOutput()
+  except Exception:
+    re = ""
+    #print("no data")
+  return re
 
-        if line.find('65,6E,64') >-1:                    
-            break
-        else:
-            head=line.find(":")
-            data=line[head+1:head+203]
-            data=data.replace(",","")
-            count+=1
-            print(count, data)
+def getCommand(im920data):
+  comData = im920data.rsplit(":", 1)
+  #print(comData)
+  return comData[1:]
 
-            img_strings.append(data)
-            time.sleep(0.1)
-            print("c")
-            com.flushInput()
-            com.write(b'TXDA' + binascii.b2a_hex(str(count).encode('utf-8')) + b'\r\n')
-            com.readline()
-            com.flushOutput()
-            com.flushInput()
-            com.write(b'TXDA' + binascii.b2a_hex(str(count).encode('utf-8')) + b'\r\n')
-            com.readline()
-            com.flushOutput()
-            print("d")
-      img_string=''.join(img_strings)#文字列にする
-      print(len(img_string))
-      img_string=img_string.replace(",","")
-     # img_string=img_string.replace("\\r\\n","")#改行削除
-     # img_string=img_string.replace("b'00,5A18,","")#b'00,5A18,削除
+def recievePhoto(logPath, photoPath,photoSize, convertedPhotoSize):
+  count = 0
+  # --- Receive Photo from IM920 --- #
+  com = setSerial(baudrate)
+  with com as ser:
+    while 1:
+      line = ser.readline().decode('utf-8')
+      line=str(line)
 
-      
-     # f.write(img_string)
-      b = bytes.fromhex(img_string)
-     # b=binascii.unhexlify(img_string)
-  #   print(str(b))
-      #b= binascii.a2b_hex(img_string)
-      
-      f.write(str(b))
-      img_array = np.fromstring(b,dtype ='uint8') #バイトデータ→ndarray変換
-     # img_array = np.reshape(img_array,(240,320))#エラーでた
-             #   img_array=np.newaxis(img_array,(-1,-1))  #エラー出た
-      img_array=np.resize(img_array,(240,320))
-                         #dec_img = cv2.imdecode(img_array, 0)
-      pil_img = Image.fromarray(img_array)
-      
-                        #cv2.imshow("decoded_image", dec_img)
-                        #pil_img.show()
-      print("end")
-      pil_img.save("decoded_target0806-9.jpg")
-      
-      print("e")
-      print(len(b))
-      print("count"+str(count))
-               # text=line.replace('\r\n','')
-                #print(text)
+      if line.find('65,6E,64') >-1:                    
+        break
+      else:
+        head=line.find(":")
+        data=line[head+1:head+203]
+        data=data.replace(",","")
+        count+=1
+        print(count)
+
+      img_strings.append(data)
+      #time.sleep(0.05)
+
+      for i in range(3):
+        com.flushInput()
+        com.write(b'TXDA' + binascii.b2a_hex(str(count).encode('utf-8')) + b'\r\n')
+        com.readline()
+        com.flushOutput()
+
+  # --- Convert to String --- #
+  img_string=''.join(img_strings)
+  #print(len(img_string))
+  img_string=img_string.replace(",","")
+  b = bytes.fromhex(img_string)
+
+  # --- Save Log --- #
+  with open(logPath, 'w') as f:
+    f.write(str(b))
+
+  # --- Convert to Photo --- #
+  img_array = np.fromstring(b, dtype ='uint8')  #Convert from byte to array
+  img_array = np.resize(img_array, photoSize)   #Resize array
+  pil_img = Image.fromarray(img_array)          
+  pil_img.save(photoPath + "-1.jpg")            #Save Photo
+
+  pil_img = pil_img.resize(convertedPhotoSize)  #Convert to QVGA
+  pil_img.save(photoPath + "-2.jpg")            #Save QVGA
+  #print(len(b))
+  #print("count "+str(count))
+
+def receiveData(data):
+  returnVal = 0
+  #print(data)
+  data = getCommand(data)
+  if(data == ['4D']):
+    for i in range(3):
+      if(data == ['4D']):
+        Send("M", baudrate)
+        Send("M", baudrate)
+        #print(data)
+        time.sleep(0.1)
+        data = read(baudrate)
+        data = getCommand(data)
+        time.sleep(0.5)
+        returnVal = 1
+      else:
+        returnVal = 0
+        break
+  else:
+    returnVal = 0
+  return returnVal
 
 
-
-
-
-
-
-
-
+if __name__ == "__main__":
+  try:
+    mode = 0
+    logPath = "photoRecieveLog.txt"
+    photoPath = "receivePhoto"
+    photoSize = (120, 160)
+    convertedPhotoSize = (320, 240)
+    print("Ready")
+    while 1:
+      im920data = read(baudrate)
+      mode = receiveData(im920data)
+      if(mode == 1):
+        print("Photo Receive")
+        recievePhoto(logPath, photoPath, photoSize, convertedPhotoSize)
+        break
+      else:
+        print(mode)
+  except:
+    print(traceback.format_exc())
