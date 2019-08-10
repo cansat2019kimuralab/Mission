@@ -54,6 +54,7 @@ def transmitdata():
 	return mode
 
 def sendphoto(byte):
+	global count
 	with open("soushinlog.txt","w")as f:
 		f.write(str(byte))
 	for i in range(0,len(byte),64):
@@ -86,7 +87,7 @@ if __name__ == "__main__":
         photopath="/home/pi/git/kimuralab/Mission/sendPhoto.jpg"
         readmode=0
         byte,mode=selectphoto(photopath,readmode)
-        print("link establish")
+        print("image ready")
 
         while mode:
             mode=transmitdata()
