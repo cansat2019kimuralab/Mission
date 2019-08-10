@@ -21,15 +21,15 @@ pi.write(22,0)
 count = 0
 x=0
 amari=0
-
+data=0
 t_start = 0
 
+img = Image.open('/home/pi/git/kimuralab/Mission/photo5.jpg')
+img_resize = img.resize((160, 120))
+img_resize.save('/home/pi/git/kimuralab/Mission/sendPhoto.jpg')
 
 def selectphoto(photoPath,readmode):
-	
-	img = Image.open('/home/pi/git/kimuralab/Mission/photo5.jpg')
-	img_resize = img.resize((160, 120))
-	img_resize.save('/home/pi/git/kimuralab/Mission/sendPhoto.jpg')
+
 	img=cv2.imread(photoPath,readmode)
 	byte = convertIMG2BYTES.IMGtoBYTES(img)
 	mode = 1
