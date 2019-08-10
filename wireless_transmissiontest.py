@@ -81,11 +81,11 @@ def sendphoto(byte):
 
 if __name__ == "__main__":
     try:
-        mode=0
+        mode=1
         photopath="/home/pi/git/kimuralab/Mission/sendPhoto.jpg"
         readmode=0
         byte,mode=selectphoto(photopath,readmode)
-        print("Start")
+        print("link establish")
 
         while mode:
             mode=transmitdata()
