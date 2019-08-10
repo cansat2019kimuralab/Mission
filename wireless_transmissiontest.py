@@ -81,7 +81,10 @@ def sendphoto(byte):
 
 if __name__ == "__main__":
     try:
-        byte,mode=selectphoto("/home/pi/git/kimuralab/Mission/sendPhoto.jpg",0)
+        mode=0
+        photopath="/home/pi/git/kimuralab/Mission/sendPhoto.jpg"
+        readmode=0
+        byte,mode=selectphoto(photopath,readmode)
         print("Start")
 
         while mode:
