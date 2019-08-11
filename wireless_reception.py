@@ -10,14 +10,14 @@ import traceback
 import warnings
 from PIL import Image
 from matplotlib import pyplot as plt
-
+import Other
 warnings.simplefilter("ignore", DeprecationWarning) #Ignore Warning of DeprecationWaring
 
 img_string=""
 img_strings=[]
 line=[]
 cngtext=[]
-
+receptionLog=r"C:\Users\hp731\Documents\GitHub\Mission\receptionLog.txt"
 baudrate=57600
 
 def setSerial(mybaudrate=57600):
@@ -51,6 +51,7 @@ def read(mybaudrate = 57600):
     com.flushInput()
     re = str(com.readline().decode('utf-8').strip())
     com.flushOutput()
+    print(str(re))
   except Exception:
     re = ""
     #print("no data")
@@ -61,7 +62,7 @@ def getCommand(im920data):
   #print(comData)
   return comData[1:]
 
-def recievePhoto(logPath, photoPath,photoSize, convertedPhotoSize):
+def receivePhoto(logPath, photoPath,photoSize, convertedPhotoSize):
   count = 0
   # --- Receive Photo from IM920 --- #
   com = setSerial(baudrate)
@@ -217,7 +218,7 @@ def receiveData(data):
 	  byte= bytes.fromhex(data)
 	  gps=byte.decode('UTF-8')
 	  Other.saveLog(receptionLog, "0", "GPS", gps, power, time.time())
-    
+
   if(data == ['4D']):
     for i in range(3):
       if(data == ['4D']):
@@ -227,7 +228,7 @@ def receiveData(data):
         time.sleep(0.1)
         data = read(baudrate)
         data = getCommand(data)
-        time.sleep(0.5)
+        time.sleep(0.2)
         returnVal = 1
       else:
         returnVal = 0
@@ -244,13 +245,16 @@ if __name__ == "__main__":
     photoPath = "receivePhoto"
     photoSize = (120, 160)
     convertedPhotoSize = (320, 240)
+    Other.saveLog(receptionLog, "0", "program start", time.time())
     print("Ready")
     while 1:
       im920data = read(baudrate)
       mode = receiveData(im920data)
       if(mode == 1):
+        t_start=time.time()
         print("Photo Receive")
-        recievePhoto(logPath, photoPath, photoSize, convertedPhotoSize)
+        receivePhoto(logPath, photoPath, photoSize, convertedPhotoSize)
+        print(time.time()-t_start)
         break
       else:
         print(mode)
