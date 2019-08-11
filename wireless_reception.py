@@ -20,9 +20,9 @@ cngtext=[]
 
 baudrate=57600
 
-def setSerial(mybaudrate=19200):
+def setSerial(mybaudrate=57600):
     com=serial.Serial(
-        port='COM37',
+        port='COM7',
         baudrate=mybaudrate,
         bytesize=serial.EIGHTBITS,
         parity=serial.PARITY_NONE,
@@ -36,7 +36,7 @@ def setSerial(mybaudrate=19200):
     com.flushOutput()
     return com
 
-def Send(args, mybaudrate = 19200):
+def Send(args, mybaudrate = 57600):
     com = setSerial(mybaudrate)
     com.flushInput()
     com.write(b'TXDA' + binascii.b2a_hex(args.encode('utf-8')) + b'\r\n')
@@ -44,7 +44,7 @@ def Send(args, mybaudrate = 19200):
     com.flushOutput()
     com.close()
 
-def read(mybaudrate = 19200):
+def read(mybaudrate = 57600):
   re = ""
   try:
     com = setSerial(mybaudrate)
@@ -113,6 +113,111 @@ def receiveData(data):
   returnVal = 0
   #print(data)
   data = getCommand(data)
+  
+  if(data==['50,31,53']):
+	  Other.saveLog(receptionLog, "1-1", "Program Started", power, time.time())
+	  returnVal=2
+	  print("Program Started")
+
+  elif(data==['50,31,46']):
+	  Other.saveLog(receptionLog, "1-2", "Program Started", power, time.time())
+	  returnVal=2
+	  print("Program Started2")
+
+  elif(data==['50,32,53']):
+	  Other.saveLog(receptionLog, "2", "Sleep Started", power, time.time())
+	  returnVal=2
+	  print("Sleep Started")
+
+	
+  elif(data==['50,32,44']):
+	  Other.saveLog(receptionLog, "2", "Sleep now", power, time.time())
+	  returnVal=2
+	  print("Sleep Now")
+
+	
+  elif(data==['50,32,46']):
+	  Other.saveLog(receptionLog, "2", "Sleep Finished", power, time.time())
+	  returnVal=2
+	  print("Sleep Finished")
+
+  elif(data==['50,33,53']):
+	  Other.saveLog(receptionLog, "3", "Release started", power, time.time())
+	  returnVal=2
+	  print("Release Started")
+
+  elif(data==['50,33,44']):
+	  Other.saveLog(receptionLog, "3", "Release judge now", power, time.time())
+	  returnVal=2
+	  print("Release judge now")
+
+  elif(data==['50,33,46']):
+	  Other.saveLog(receptionLog, "3", "Release judge finished", power, time.time())
+	  returnVal=2
+	  print("Release judge finished")
+
+  elif(data==['50,34,53']):
+	  Other.saveLog(receptionLog, "4", "Land started", power, time.time())
+	  returnVal=2	
+	  print("Land judge started")
+
+  elif(data==['50,34,44']):
+	  Other.saveLog(receptionLog, "4", "Land judge now", power, time.time())
+	  returnVal=2
+	  print("Land judge now")
+
+  elif(data==['50,34,46']):
+	  Other.saveLog(receptionLog, "4", "Land FInished", power, time.time())
+	  returnVal=2
+	  print("Land judge finished")
+
+
+  elif(data==['50,35,53']):
+	  Other.saveLog(receptionLog, "5", "Melt started", power, time.time())
+	  returnVal=2
+	  print("Melt Started")
+
+  elif(data==['50,35,46']):
+	  Other.saveLog(receptionLog, "5", "Melt Finished", power, time.time())
+	  returnVal=2
+	  print("Melt finished")
+
+  elif(data==['50,36,53']):
+	  Other.saveLog(receptionLog, "6", "ParaAvoidance started", power, time.time())
+	  returnVal=2	 
+	  print("ParaAvoidance startedd")  
+	
+  elif(data==['50,36,46']):
+	  Other.saveLog(receptionLog, "6", "ParaAvoidance finished", power, time.time())
+	  returnVal=2
+	  print("ParaAvoidance finished")
+
+  elif(data==['50,37,53']):
+	  Other.saveLog(receptionLog, "7", "Running Phase Started", power, time.time())
+	  returnVal=2
+	  print("Running Phase Started")
+
+  elif(data==['50,37,46']):
+	  Other.saveLog(receptionLog, "7", "Running Phase Finished", power, time.time())
+	  returnVal=2
+	  print("Running Phase Finished")
+
+  elif(data==['50,38,53']):
+	  Other.saveLog(receptionLog, "8", "GoalDetection Phase Started", power, time.time())
+	  returnVal=2
+	  print("GoalDeetection Phase Started")
+
+  elif(data==['50,38,46']):
+	   Other.saveLog(receptionLog, "8", "Running Phase Finished", power, time.time())
+	   returnVal=2
+	   print("Running Phase Finished")
+
+  elif '47' in data:	#GPS
+	  data=str(data)
+	  byte= bytes.fromhex(data)
+	  gps=byte.decode('UTF-8')
+	  Other.saveLog(receptionLog, "0", "GPS", gps, power, time.time())
+    
   if(data == ['4D']):
     for i in range(3):
       if(data == ['4D']):
