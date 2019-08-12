@@ -55,7 +55,7 @@ def transmitdata():
 
 def sendphoto(byte):
 	global count
-	with open("soushinlog.txt","w")as f:
+	with open("communicationlog.txt","w")as f:
 		f.write(str(byte))
 	for i in range(0,len(byte),64):
 		data = IM920.IMSend(byte[i:i+64])
