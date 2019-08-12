@@ -19,7 +19,9 @@ line=[]
 cngtext=[]
 receptionLog=r"C:\Users\hp731\Documents\GitHub\Mission\communicationDecryptioLogLog.txt"
 baudrate=57600
-
+num=[0,0,0] 
+power=0 #valiable for receive strenghth
+comdata=[] #valiable for receive phase
 def setSerial(mybaudrate=57600):
     com=serial.Serial(
         port='COM7',
@@ -58,13 +60,16 @@ def read(mybaudrate = 57600):
   return re
 
 def getCommand(im920data):
-  comData = im920data.rsplit(":", 1)
-  print(comData)
-  print(comData[0])
-  num=comData[0].split(",")
-  power=num[2]
-  print(num[2])
-  return comData[1:],power
+  try:
+   comData = im920data.rsplit(":", 1)
+   num=comData[0].split(",")
+   power=num[2]
+   print(num[2])
+   return comData[1:],power
+  except Exception:
+   a=0
+   b=0
+   return a,b
 
 def receivePhoto(logPath, photoPath,photoSize, convertedPhotoSize):
   count = 0
@@ -75,7 +80,7 @@ def receivePhoto(logPath, photoPath,photoSize, convertedPhotoSize):
       line = ser.readline().decode('utf-8')
       line=str(line)
 
-      if line.find('4d,46') >-1:      #MissionFinish              
+      if line.find('4D,30,46') >-1:      #MissionFinish              
         break
       else:
         head=line.find(":")
@@ -123,121 +128,131 @@ def powerread(power):
 def receiveData(data):
   returnVal = 0
   #print(data)
-  data,power= getCommand(data)
+  comdata,power= getCommand(data)
 
-  if(data==['91']):
+  if(comdata==['91']):
 	  Other.saveLog(receptionLog, "1-1", "Program Started", power, time.time())
 	  returnVal=2
 	  powerread(power)
 	  print("Program Started")
 
-  elif(data==['50,31,46']):
+  elif(comdata==['50,31,46']):
 	  Other.saveLog(receptionLog, "1-2", "Program Started", power, time.time())
 	  returnVal=2
 	  powerread(power)
 	  print("Program Started2")
 
-  elif(data==['50,32,53']):
+  elif(comdata==['50,32,53']):
 	  Other.saveLog(receptionLog, "2", "Sleep Started", power, time.time())
 	  returnVal=2
 	  powerread(power)
 	  print("Sleep Started")
 
-	
-  elif(data==['50,32,44']):
+  elif(comdata==['50,32,44']):
 	  Other.saveLog(receptionLog, "2", "Sleep now", power, time.time())
 	  returnVal=2
 	  powerread(power)
 	  print("Sleep Now")
 
-	
-  elif(data==['50,32,46']):
+  elif(comdata==['50,32,46']):
 	  Other.saveLog(receptionLog, "2", "Sleep Finished", power, time.time())
 	  returnVal=2
 	  powerread(power)
 	  print("Sleep Finished")
 
-  elif(data==['50,33,53']):
+  elif(comdata==['50,33,53']):
 	  Other.saveLog(receptionLog, "3", "Release started", power, time.time())
 	  returnVal=2
 	  powerread(power)
 	  print("Release Started")
 
-  elif(data==['50,33,44']):
+  elif(comdata==['50,33,44']):
 	  Other.saveLog(receptionLog, "3", "Release judge now", power, time.time())
 	  returnVal=2
 	  powerread(power)
 	  print("Release judge now")
 
-  elif(data==['50,33,46']):
+  elif(comdata==['50,33,46']):
 	  Other.saveLog(receptionLog, "3", "Release judge finished", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Release judge finished")
 
-  elif(data==['50,34,53']):
+  elif(comdata==['50,34,53']):
 	  Other.saveLog(receptionLog, "4", "Land started", power, time.time())
 	  returnVal=2	
+	  powerread(power)
 	  print("Land judge started")
 
-  elif(data==['50,34,44']):
+  elif(comdata==['50,34,44']):
 	  Other.saveLog(receptionLog, "4", "Land judge now", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Land judge now")
 
-  elif(data==['50,34,46']):
+  elif(comdata==['50,34,46']):
 	  Other.saveLog(receptionLog, "4", "Land FInished", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Land judge finished")
 
 
-  elif(data==['50,35,53']):
+  elif(comdata==['50,35,53']):
 	  Other.saveLog(receptionLog, "5", "Melt started", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Melt Started")
 
-  elif(data==['50,35,46']):
+  elif(comdata==['50,35,46']):
 	  Other.saveLog(receptionLog, "5", "Melt Finished", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Melt finished")
 
-  elif(data==['50,36,53']):
+  elif(comdata==['50,36,53']):
 	  Other.saveLog(receptionLog, "6", "ParaAvoidance started", power, time.time())
 	  returnVal=2	 
+	  powerread(power)
 	  print("ParaAvoidance startedd")  
 	
-  elif(data==['50,36,46']):
+  elif(comdata==['50,36,46']):
 	  Other.saveLog(receptionLog, "6", "ParaAvoidance finished", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("ParaAvoidance finished")
 
-  elif(data==['50,37,53']):
+  elif(comdata==['50,37,53']):
 	  Other.saveLog(receptionLog, "7", "Running Phase Started", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Running Phase Started")
 
-  elif(data==['50,37,46']):
+  elif(comdata==['50,37,46']):
 	  Other.saveLog(receptionLog, "7", "Running Phase Finished", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Running Phase Finished")
 
-  elif(data==['50,38,53']):
+  elif(comdata==['50,38,53']):
 	  Other.saveLog(receptionLog, "8", "GoalDetection Phase Started", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("GoalDeetection Phase Started")
 
-  elif(data==['50,38,46']):
+  elif(comdata==['50,38,46']):
 	   Other.saveLog(receptionLog, "8", "Running Phase Finished", power, time.time())
 	   returnVal=2
+	   powerread(power)
 	   print("Running Phase Finished")
 
-  elif '47' in data:	#GPS
-	  data=str(data)
-	  gps = int(data, 16)
-	  Other.saveLog(receptionLog, "0", "GPS", gps, power, time.time())
+ # elif '47' in data:	#GPS
+	#  data=str(data)
+	 # gps = int(data, 16)
+	 # Other.saveLog(receptionLog, "0", "GPS", gps, power, time.time())
 
-  if(data == ['4D']):
+  elif(comdata == ['4D']):
     for i in range(3):
-      if(data == ['4D']):
+      if(comdata == ['4D']):
         Send("M", baudrate)
         Send("M", baudrate)
         #print(data)
@@ -251,6 +266,8 @@ def receiveData(data):
         break
   else:
     returnVal = 0
+
+  print(data,power)
   return returnVal
 
 
@@ -274,5 +291,7 @@ if __name__ == "__main__":
         break
       else:
         print("mode : "+str(mode))
-  except:
+  
+    
+  except IndexError:
     print(traceback.format_exc())
