@@ -80,11 +80,11 @@ def sendphoto(byte):
 	#print(amari,'/',64)
 	#print(str(byte[i:i+amari]))
 
-	IM920.Send("MF")
+	IM920.Send("MFend")
 	time.sleep(1)
-	IM920.Send("MF")
+	IM920.Send("MFend")
 	time.sleep(1)
-	IM920.Send("MF")
+	IM920.Send("MFend")
 
 if __name__ == "__main__":
     try:

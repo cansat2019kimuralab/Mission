@@ -9,3 +9,6 @@
 0	program start	1565606505.6857524	
 6	ParaAvoidance started	B5	1565606555.9138348	
 6	ParaAvoidance finished	B6	1565606573.5809197	
+0	program start	1565607125.6002173	
+6	ParaAvoidance started	B6	1565607160.1740623	
+6	ParaAvoidance finished	B6	1565607177.8856692	
