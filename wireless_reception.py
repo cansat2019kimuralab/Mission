@@ -17,7 +17,7 @@ img_string=""
 img_strings=[]
 line=[]
 cngtext=[]
-receptionLog=r"C:\Users\hp731\Documents\GitHub\Mission\receptionLog.txt"
+receptionLog=r"C:\Users\hp731\Documents\GitHub\Mission\communicationDecryptioLogLog.txt"
 baudrate=57600
 
 def setSerial(mybaudrate=57600):
@@ -59,8 +59,12 @@ def read(mybaudrate = 57600):
 
 def getCommand(im920data):
   comData = im920data.rsplit(":", 1)
-  #print(comData)
-  return comData[1:]
+  print(comData)
+  print(comData[0])
+  num=comData[0].split(",")
+  power=num[2]
+  print(num[2])
+  return comData[1:],power
 
 def receivePhoto(logPath, photoPath,photoSize, convertedPhotoSize):
   count = 0
@@ -71,7 +75,7 @@ def receivePhoto(logPath, photoPath,photoSize, convertedPhotoSize):
       line = ser.readline().decode('utf-8')
       line=str(line)
 
-      if line.find('65,6E,64') >-1:                    
+      if line.find('4d,46') >-1:      #MissionFinish              
         break
       else:
         head=line.find(":")
@@ -110,46 +114,59 @@ def receivePhoto(logPath, photoPath,photoSize, convertedPhotoSize):
   #print(len(b))
   #print("count "+str(count))
 
+def powerread(power):
+  power=str(power)
+  power = int(power, 16)
+  print(power)
+  print("strength: "+str(power))
+
 def receiveData(data):
   returnVal = 0
   #print(data)
-  data = getCommand(data)
-  
-  if(data==['50,31,53']):
+  data,power= getCommand(data)
+
+  if(data==['91']):
 	  Other.saveLog(receptionLog, "1-1", "Program Started", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Program Started")
 
   elif(data==['50,31,46']):
 	  Other.saveLog(receptionLog, "1-2", "Program Started", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Program Started2")
 
   elif(data==['50,32,53']):
 	  Other.saveLog(receptionLog, "2", "Sleep Started", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Sleep Started")
 
 	
   elif(data==['50,32,44']):
 	  Other.saveLog(receptionLog, "2", "Sleep now", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Sleep Now")
 
 	
   elif(data==['50,32,46']):
 	  Other.saveLog(receptionLog, "2", "Sleep Finished", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Sleep Finished")
 
   elif(data==['50,33,53']):
 	  Other.saveLog(receptionLog, "3", "Release started", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Release Started")
 
   elif(data==['50,33,44']):
 	  Other.saveLog(receptionLog, "3", "Release judge now", power, time.time())
 	  returnVal=2
+	  powerread(power)
 	  print("Release judge now")
 
   elif(data==['50,33,46']):
@@ -215,8 +232,7 @@ def receiveData(data):
 
   elif '47' in data:	#GPS
 	  data=str(data)
-	  byte= bytes.fromhex(data)
-	  gps=byte.decode('UTF-8')
+	  gps = int(data, 16)
 	  Other.saveLog(receptionLog, "0", "GPS", gps, power, time.time())
 
   if(data == ['4D']):
@@ -257,6 +273,6 @@ if __name__ == "__main__":
         print(time.time()-t_start)
         break
       else:
-        print(mode)
+        print("mode : "+str(mode))
   except:
     print(traceback.format_exc())
