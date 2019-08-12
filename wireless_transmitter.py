@@ -91,7 +91,7 @@ if __name__ == "__main__":
         mode=1
         photopath='/home/pi/git/kimuralab/Mission/photo5.jpg'
         readmode=0
-        changesize(photopath,readmode)
+        changesize(photopath)
         byte,mode=selectphoto('/home/pi/git/kimuralab/Mission/sendPhoto.jpg',readmode)
         print("image ready")
 
