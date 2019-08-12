@@ -80,7 +80,7 @@ def receivePhoto(logPath, photoPath,photoSize, convertedPhotoSize):
       line = ser.readline().decode('utf-8')
       line=str(line)
 
-      if line.find('4D,30,46') >-1:      #MissionFinish              
+      if line.find('4D,46,65,6E,64') >-1:      #MissionFinish              
         break
       else:
         head=line.find(":")
@@ -288,7 +288,8 @@ if __name__ == "__main__":
         print("Photo Receive")
         receivePhoto(logPath, photoPath, photoSize, convertedPhotoSize)
         print(time.time()-t_start)
-        break
+        print("MissionFinish")
+        
       else:
         print("mode : "+str(mode))
   
