@@ -23,10 +23,15 @@ x=0
 amari=0
 data=0
 t_start = 0
-
+'''
 img = Image.open('/home/pi/git/kimuralab/Mission/photo5.jpg')
 img_resize = img.resize((160, 120))
 img_resize.save('/home/pi/git/kimuralab/Mission/sendPhoto.jpg')
+'''
+def changesize(photopath,readmode):
+	img=Image.open(photopath,readmode)
+	img_resize=img.resize((160,120))
+	img_resize.save('/home/pi/git/kimuralab/Mission/sendPhoto.jpg')
 
 def selectphoto(photoPath,readmode):
 
@@ -84,9 +89,10 @@ def sendphoto(byte):
 if __name__ == "__main__":
     try:
         mode=1
-        photopath="/home/pi/git/kimuralab/Mission/sendPhoto.jpg"
+        photopath='/home/pi/git/kimuralab/Mission/photo5.jpg'
         readmode=0
-        byte,mode=selectphoto(photopath,readmode)
+        changesize(photopath,readmode)
+        byte,mode=selectphoto('/home/pi/git/kimuralab/Mission/sendPhoto.jpg',readmode)
         print("image ready")
 
         while mode:
