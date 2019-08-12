@@ -131,124 +131,124 @@ def receiveData(data):
   comdata,power= getCommand(data)
 
   if(comdata==['91']):
-	  Other.saveLog(receptionLog, "1-1", "Program Started", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Program Started")
+      Other.saveLog(receptionLog, "1-1", "Program Started", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Program Started")
 
   elif(comdata==['50,31,46']):
-	  Other.saveLog(receptionLog, "1-2", "Program Started", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Program Started2")
+      Other.saveLog(receptionLog, "1-2", "Program Started", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Program Started2")
 
   elif(comdata==['50,32,53']):
-	  Other.saveLog(receptionLog, "2", "Sleep Started", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Sleep Started")
+      Other.saveLog(receptionLog, "2", "Sleep Started", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Sleep Started")
 
   elif(comdata==['50,32,44']):
-	  Other.saveLog(receptionLog, "2", "Sleep now", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Sleep Now")
+      Other.saveLog(receptionLog, "2", "Sleep now", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Sleep Now")
 
   elif(comdata==['50,32,46']):
-	  Other.saveLog(receptionLog, "2", "Sleep Finished", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Sleep Finished")
+      Other.saveLog(receptionLog, "2", "Sleep Finished", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Sleep Finished")
 
   elif(comdata==['50,33,53']):
-	  Other.saveLog(receptionLog, "3", "Release started", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Release Started")
+      Other.saveLog(receptionLog, "3", "Release started", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Release Started")
 
   elif(comdata==['50,33,44']):
-	  Other.saveLog(receptionLog, "3", "Release judge now", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Release judge now")
+      Other.saveLog(receptionLog, "3", "Release judge now", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Release judge now")
 
   elif(comdata==['50,33,46']):
-	  Other.saveLog(receptionLog, "3", "Release judge finished", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Release judge finished")
+      Other.saveLog(receptionLog, "3", "Release judge finished", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Release judge finished")
 
   elif(comdata==['50,34,53']):
-	  Other.saveLog(receptionLog, "4", "Land started", power, time.time())
-	  returnVal=2	
-	  powerread(power)
-	  print("Land judge started")
+      Other.saveLog(receptionLog, "4", "Land started", power, time.time())
+      returnVal=2	
+      powerread(power)
+      print("Land judge started")
 
   elif(comdata==['50,34,44']):
-	  Other.saveLog(receptionLog, "4", "Land judge now", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Land judge now")
+      Other.saveLog(receptionLog, "4", "Land judge now", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Land judge now")
 
   elif(comdata==['50,34,46']):
-	  Other.saveLog(receptionLog, "4", "Land FInished", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Land judge finished")
+      Other.saveLog(receptionLog, "4", "Land FInished", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Land judge finished")
 
 
   elif(comdata==['50,35,53']):
-	  Other.saveLog(receptionLog, "5", "Melt started", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Melt Started")
+      Other.saveLog(receptionLog, "5", "Melt started", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Melt Started")
 
   elif(comdata==['50,35,46']):
-	  Other.saveLog(receptionLog, "5", "Melt Finished", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Melt finished")
+      Other.saveLog(receptionLog, "5", "Melt Finished", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Melt finished")
 
   elif(comdata==['50,36,53']):
-	  Other.saveLog(receptionLog, "6", "ParaAvoidance started", power, time.time())
-	  returnVal=2	 
-	  powerread(power)
-	  print("ParaAvoidance startedd")  
-	
+      Other.saveLog(receptionLog, "6", "ParaAvoidance started", power, time.time())
+      returnVal=2	 
+      powerread(power)
+      print("ParaAvoidance started")  
+    
   elif(comdata==['50,36,46']):
-	  Other.saveLog(receptionLog, "6", "ParaAvoidance finished", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("ParaAvoidance finished")
+      Other.saveLog(receptionLog, "6", "ParaAvoidance finished", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("ParaAvoidance finished")
 
   elif(comdata==['50,37,53']):
-	  Other.saveLog(receptionLog, "7", "Running Phase Started", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Running Phase Started")
+      Other.saveLog(receptionLog, "7", "Running Phase Started", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Running Phase Started")
 
   elif(comdata==['50,37,46']):
-	  Other.saveLog(receptionLog, "7", "Running Phase Finished", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("Running Phase Finished")
+      Other.saveLog(receptionLog, "7", "Running Phase Finished", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("Running Phase Finished")
 
   elif(comdata==['50,38,53']):
-	  Other.saveLog(receptionLog, "8", "GoalDetection Phase Started", power, time.time())
-	  returnVal=2
-	  powerread(power)
-	  print("GoalDeetection Phase Started")
+      Other.saveLog(receptionLog, "8", "GoalDetection Phase Started", power, time.time())
+      returnVal=2
+      powerread(power)
+      print("GoalDeetection Phase Started")
 
   elif(comdata==['50,38,46']):
-	   Other.saveLog(receptionLog, "8", "Running Phase Finished", power, time.time())
-	   returnVal=2
-	   powerread(power)
-	   print("Running Phase Finished")
+       Other.saveLog(receptionLog, "8", "Running Phase Finished", power, time.time())
+       returnVal=2
+       powerread(power)
+       print("Running Phase Finished")
 
- # elif '47' in data:	#GPS
-	#  data=str(data)
-	 # gps = int(data, 16)
-	 # Other.saveLog(receptionLog, "0", "GPS", gps, power, time.time())
+  elif str('47') in str(comdata):	#GPS
+      gps = int(comdata, 16)
+      print(gps)
+      Other.saveLog(receptionLog, "0", "GPS", gps, power, time.time())
 
   elif(comdata == ['4D']):
     for i in range(3):
@@ -296,3 +296,6 @@ if __name__ == "__main__":
     
   except IndexError:
     print(traceback.format_exc())
+
+  except :
+      print(traceback.format_exc())
