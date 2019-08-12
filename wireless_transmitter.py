@@ -28,8 +28,8 @@ img = Image.open('/home/pi/git/kimuralab/Mission/photo5.jpg')
 img_resize = img.resize((160, 120))
 img_resize.save('/home/pi/git/kimuralab/Mission/sendPhoto.jpg')
 '''
-def changesize(photopath,readmode):
-	img=Image.open(photopath,readmode)
+def changesize(photoName):
+	img=Image.open(photoName)
 	img_resize=img.resize((160,120))
 	img_resize.save('/home/pi/git/kimuralab/Mission/sendPhoto.jpg')
 
@@ -80,11 +80,11 @@ def sendphoto(byte):
 	#print(amari,'/',64)
 	#print(str(byte[i:i+amari]))
 
-	IM920.Send("end")
+	IM920.Send("MF")
 	time.sleep(1)
-	IM920.Send("end")
+	IM920.Send("MF")
 	time.sleep(1)
-	IM920.Send("end")
+	IM920.Send("MF")
 
 if __name__ == "__main__":
     try:
