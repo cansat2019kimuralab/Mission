@@ -10,6 +10,7 @@ import convertIMG2BYTES
 import cv2
 from PIL import Image
 import traceback
+
 '''
 pi=pigpio.pi()
 pi.set_mode(22,pigpio.OUTPUT)
@@ -23,11 +24,13 @@ x=0
 amari=0
 data=0
 t_start = 0
+
 '''
 img = Image.open('/home/pi/git/kimuralab/Mission/photo5.jpg')
 img_resize = img.resize((160, 120))
 img_resize.save('/home/pi/git/kimuralab/Mission/sendPhoto.jpg')
 '''
+
 def changesize(photoName):
 	img=Image.open(photoName)
 	img_resize=img.resize((160,120))
@@ -55,28 +58,45 @@ def transmitdata():
 		print(mode)
 		time.sleep(0.5)
 	print(mode)
-	time.sleep(4)	
+	time.sleep(3)
 	return mode
 
 def sendphoto(byte):
 	global count
+	i, j, k = 0, 0, 0
+
 	with open("communicationlog.txt","w")as f:
 		f.write(str(byte))
+
 	for i in range(0,len(byte),64):
 		data = IM920.IMSend(byte[i:i+64])
 		cng = IM920.Reception()
-		if(cng == ""):
-			data = IM920.IMSend(byte[i:i+64])
-			cng = IM920.Reception()
-		time.sleep(0.1)
-		count+=1
-		print(count)
+		for j in range(5):
+			print(count, j)
+			if(cng == ""):
+				data = IM920.IMSend(byte[i:i+64])
+				cng = IM920.Reception()
+			else:
+				time.sleep(0.1)
+				count+=1
+				break
+		#print(j)
+		if j == 4:
+			break
 
 		#print(i,'/',len(byte))
 		amari=len(byte)-i
 
 	amari=len(byte)-i
 	IM920.IMSend(byte[i:i+amari])
+	data=IM920.IMSend(byte[i:i+amari])
+	cng=IM920.Reception()
+	for k in range(5):
+		print(count,k)
+		if(cng==""):
+			data=IM920.IMSend(byte[i:i+amari])
+			cng=IM920.Reception()
+		
 	#print(amari,'/',64)
 	#print(str(byte[i:i+amari]))
 
