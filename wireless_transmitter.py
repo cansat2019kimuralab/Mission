@@ -96,7 +96,9 @@ def sendphoto(byte):
 		if(cng==""):
 			data=IM920.IMSend(byte[i:i+amari])
 			cng=IM920.Reception()
-		
+		else:
+			break
+
 	#print(amari,'/',64)
 	#print(str(byte[i:i+amari]))
 
