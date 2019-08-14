@@ -92,8 +92,8 @@ def receivePhoto(logPath, photoPath,photoSize, convertedPhotoSize):
 
       img_strings.append(data)
       #time.sleep(0.05)
-
-      for i in range(3):
+      #ACK send
+      for i in range(5):
         com.flushInput()
         com.write(b'TXDA' + binascii.b2a_hex(str(count).encode('utf-8')) + b'\r\n')
         com.readline()
@@ -131,7 +131,7 @@ def receiveData(data):
   #print(data)
   comdata,power= getCommand(data)
 
-  if(comdata==['91']):
+  if(comdata==['50,51,53']):
       Other.saveLog(receptionLog, "1-1", "Program Started", power, datetime.datetime.now())
       returnVal=2
       powerread(power)
@@ -241,10 +241,22 @@ def receiveData(data):
       print("GoalDeetection Phase Started")
 
   elif(comdata==['50,38,46']):
-       Other.saveLog(receptionLog, "8", "Running Phase Finished", power, datetime.datetime.now())
+      Other.saveLog(receptionLog, "8", "GoalDetection Phase Finished", power, datetime.datetime.now())
+      returnVal=2
+      powerread(power)
+      print("GoalDeetection Phase Finished")
+
+  elif(comdata==['50,40,46']):
+       Other.saveLog(receptionLog, "10", "all Finished", power, datetime.datetime.now())
        returnVal=2
        powerread(power)
        print("Running Phase Finished")
+
+  elif(comdata==['45,4F']):
+       Other.saveLog(receptionLog, "11", "Error Occured", power, datetime.datetime.now())
+       returnVal=2
+       powerread(power)
+       print("EO")
 
   elif str('47') in str(comdata):	#GPS
       gps = int(comdata, 16)
@@ -279,7 +291,7 @@ if __name__ == "__main__":
     photoPath = "receivePhoto"
     photoSize = (120, 160)
     convertedPhotoSize = (320, 240)
-    Other.saveLog(receptionLog, "0", "program start", datetime.datetime.now())
+    Other.saveLog(receptionLog, "0", "receiveprogram start", datetime.datetime.now())
     print("Ready")
     while 1:
       im920data = read(baudrate)
@@ -292,7 +304,7 @@ if __name__ == "__main__":
         print("MissionFinish")
         
       else:
-        print("mode : "+str(mode))
+        print("mode : "+str(mode)+" "+str(datetime.datetime.now()))
   
     
   except IndexError:
