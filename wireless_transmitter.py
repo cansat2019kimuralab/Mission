@@ -65,7 +65,7 @@ def sendphoto(byte):
 	global count
 	i, j, k = 0, 0, 0
 
-	with open("communicationlog.txt","w")as f:
+	with open("/home/pi/log/communicationlog.txt","w")as f:
 		f.write(str(byte))
 
 	for i in range(0,len(byte),64):
