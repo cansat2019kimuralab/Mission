@@ -13,7 +13,7 @@ from matplotlib import pyplot as plt
 import Other
 import datetime
 baudrate=19200
-receptionLog=r"C:\Users\hp731\Documents\GitHub\Mission\communicationDecryptionLog.txt"
+receptionLog=r"C:\Users\hp731\Documents\GitHub\Mission\6e09communicationDecryptionLog.txt"
 def setSerial(mybaudrate=19200):
     com=serial.Serial(
         port='COM7',
