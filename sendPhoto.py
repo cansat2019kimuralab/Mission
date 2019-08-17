@@ -6,25 +6,27 @@ import numpy as np
 
 import IM920
 
-img = cv2.imread("/home/pi/photo/photo21.jpg")
-img = cv2.resize(img, (160, 120))
-cv2.imwrite('sendPhoto.jpg', img)
 
-num = 1000000
-IM920.Send(str(num))
-print(num)
+def sendPhoto(photoPath):
+	img = cv2.imread(photoPath)
+	img = cv2.resize(img, (80, 60))
+	cv2.imwrite('sendPhoto.jpg', img)
 
+	#print("Start")
+	t = time.time()
+	for i in range(len(img)):
+		for j in range(len(img[i])):
+			num = int(img[i][j][2]) + int(img[i][j][1]) * (10 ** 3) + int(img[i][j][0]) * (10 ** 6) + j * (10 ** 9) + i * (10 ** 12)
+			IM920.Send(str(num))
+			print(num)
+	IM920.Send("P1F")
+	IM920.Send("P2S")
+	IM920.Send("MF")
+	IM920.Send("MF")
+	IM920.Send("MF")
+	print(time.time() - t)
+	print("Finish")
 
-print("Start")
-
-'''
-for i in range(len(img)):
-	for j in range(len(img[i])):
-		num = int(img[i][j][0]) + j * 1000 + i * 1000000
-		IM920.Send(str(num))
-		print(num, i, j, img[i][j][0])
-		#time.sleep(0.05)
-	#print(i)
-'''
-
-print("Finish")
+if __name__ == "__main__":
+	photoName = "/home/pi/photo/photo21.jpg"
+	sendPhoto(photoName)
