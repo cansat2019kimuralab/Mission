@@ -12,9 +12,9 @@ from PIL import Image
 from matplotlib import pyplot as plt
 import Other
 import datetime
-baudrate=57600
-receptionLog=r"C:\Users\hp731\Documents\GitHub\Mission\communicationDecryptioLogLog.txt"
-def setSerial(mybaudrate=57600):
+baudrate=19200
+receptionLog=r"C:\Users\hp731\Documents\GitHub\Mission\communicationDecryptionLog.txt"
+def setSerial(mybaudrate=19200):
     com=serial.Serial(
         port='COM7',
         baudrate=mybaudrate,
@@ -32,7 +32,7 @@ def setSerial(mybaudrate=57600):
 
 com=setSerial(57600)    
 
-def Reception(mybaudrate =57600):
+def Reception(mybaudrate =19200):
     global com
     '''
 
@@ -47,7 +47,7 @@ def Reception(mybaudrate =57600):
         #print(text)
         com.flushOutput()
         text = text.replace("\r\n","")
-      
+        #power=text.split(":")[0]
         #print(text)
         text = text.split(":")[1]
         #print(text)
@@ -57,16 +57,17 @@ def Reception(mybaudrate =57600):
         #print(text)
         for x in text:
             cngtext += chr(int(x,16))
-        
+            Other.saveLog(receptionLog,  cngtext, datetime.datetime.now())
         #f.write(text)
         #f.write("\n")
         #print(text)
         
     except Exception:
         cngtext = ""
-        print("not input data")
+        print("NO DATA")
     #com.close()
     return cngtext
+    
     
 
 
@@ -135,9 +136,9 @@ if __name__ == "__main__":
             
             #time.sleep(0.02)
     
-        cv2.imwrite('receive6e09.jpg',array)
+        cv2.imwrite('receive315c.jpg',array)
 
-        np.save('sample_6e09.npy', array)
+        np.save('sample_315c.npy', array)
     except :
         com.close()
         print(traceback.format_exc())

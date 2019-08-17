@@ -13,7 +13,7 @@ from matplotlib import pyplot as plt
 import Other
 import datetime
 baudrate=19200
-receptionLog=r"C:\Users\hp731\Documents\GitHub\Mission\communicationDecryptioLogLog.txt"
+receptionLog=r"C:\Users\hp731\Documents\GitHub\Mission\communicationDecryptionLog.txt"
 def setSerial(mybaudrate=19200):
     com=serial.Serial(
         port='COM8',
@@ -57,7 +57,7 @@ def Reception(mybaudrate =19200):
         #print(text)
         for x in text:
             cngtext += chr(int(x,16))
-        
+            Other.saveLog(receptionLog,  cngtext, datetime.datetime.now())
         #f.write(text)
         #f.write("\n")
         #print(text)
@@ -66,7 +66,8 @@ def Reception(mybaudrate =19200):
         cngtext = ""
         print("NO DATA")
     #com.close()
-    return cngtext#,power
+    return cngtext
+    
     
 
 
