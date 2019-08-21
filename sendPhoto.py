@@ -19,13 +19,28 @@ def sendPhoto(photoPath):
 
 	#print("Start")
 	t = time.time()
+	count = 0
 	for i in range(len(img)):
 		for j in range(len(img[i])):
 			num = int(img[i][j][2]) + int(img[i][j][1]) * (10 ** 3) + int(img[i][j][0]) * (10 ** 6) + j * (10 ** 9) + i * (10 ** 12)
-			IM920.Send(str(num))
+			sendStatus = IM920.Send(str(num))
+			#print(sendStatus)
+			t_send = time.time()
+			while(sendStatus != b'OK\r\n'):
+				if(time.time() - t_send > 3):
+					break
+				else:
+					time.sleep(0.01)
+					sendStatus = IM920.Send(str(num))
+					#print("Send")
+					count = count + 1
 			print(num)
+	print(count)
+	time.sleep(0.1)
 	IM920.Send("MF")
+	time.sleep(0.1)
 	IM920.Send("MF")
+	time.sleep(0.1)
 	IM920.Send("MF")
 	#print(time.time() - t)
 	#print("Finish")
