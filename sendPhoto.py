@@ -14,7 +14,7 @@ sendPhotoName = ''
 
 def sendPhoto(photoPath):
 	returnVal = 0
-	if os.path.exists(photoPath)
+	if os.path.exists(photoPath):
 		img = cv2.imread(photoPath)
 		img = cv2.resize(img, (80, 60))
 		#sendPhotoName = Other.fileName(sendPhotoPath, 'jpg')
