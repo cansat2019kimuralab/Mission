@@ -27,7 +27,7 @@ def sendPhoto(photoPath):
 			for j in range(len(img[i])):
 				num = int(img[i][j][2]) + int(img[i][j][1]) * (10 ** 3) + int(img[i][j][0]) * (10 ** 6) + j * (10 ** 9) + i * (10 ** 12)
 				sendStatus = IM920.Send(str(num))
-				#print(sendStatus)
+				print(str(num))
 				t_send = time.time()
 				while(sendStatus != b'OK\r\n'):
 					if(time.time() - t_send > 3):
@@ -54,6 +54,7 @@ def sendPhoto(photoPath):
 	return returnVal
 
 if __name__ == "__main__":
-	photoName = "/home/pi/photo/photo21.jpg"
+	IM920.Strt("1")
+	photoName = "sendPhoto.jpg"
 	sendPhotoStatus = sendPhoto(photoName)
 	print(sendPhotoStatus)
