@@ -54,7 +54,7 @@ def sendPhoto(photoPath):
 	return returnVal
 
 if __name__ == "__main__":
-	IM920.Strt("1")
+	IM920.Strt("2")
 	photoName = "sendPhoto.jpg"
 	sendPhotoStatus = sendPhoto(photoName)
 	print(sendPhotoStatus)
